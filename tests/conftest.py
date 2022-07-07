@@ -8,4 +8,4 @@ def browser_management():
     browser.config.browser_name = 'chrome'
     browser.config.timeout = 3
     browser.config.window_width = 1920
-    browser.config.window_height = 1050
+    browser.config.window_height = 1920

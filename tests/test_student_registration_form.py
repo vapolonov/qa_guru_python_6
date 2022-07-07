@@ -1,8 +1,13 @@
-from selene import have, by, command
-from selene.support.shared import browser
-from selene.support.shared.jquery_style import s, ss
+from typing import Optional
 
-from qa_guru_6.utils import resource, upload_resource
+from selene import have, command
+from selene.core.entity import Element
+from selene.support.shared import browser
+from selene.support.shared.jquery_style import s
+
+from qa_guru_6.controls import select
+# from qa_guru_6.controls import tags_input
+from qa_guru_6.utils import resource, arrange_student_registration_form_opened
 
 
 class Student:
@@ -38,13 +43,6 @@ class Hobbies:
     music = 'Music'
 
 
-def arrange_student_registration_form_opened():
-    browser.open('/automation-practice-form')
-    browser.all('[id^=google_ads][id$=container__],[id$=Advertisement]').with_(timeout=10)\
-        .should(have.size_less_than_or_equal(2))\
-        .perform(command.js.remove)
-
-
 def test_submit_automation_practice_form():
     arrange_student_registration_form_opened()
 
@@ -67,34 +65,28 @@ def test_submit_automation_practice_form():
     s('.react-datepicker__month-select').s(f'[value="{Student.month}"]').click()
     s(f'.react-datepicker__day--0{Student.day}').click()
 
+    class TagsInput:
+        def __init__(self):
+            self.element: Element = ...
+
+        def add(self, from_: str, /, *, autocomplete: Optional[str] = None):
+            self.element.type(from_)
+            browser.all(
+                '.subjects-auto-complete_option'
+            ).element_by(have.text(autocomplete or from_)).click()
+
+
     # Select Subjects
-    # s('#subjectsInput').set_value(Subjects.maths).press_enter()
-    # s('#subjectsInput').set_value(Subjects.english).press_enter()
-    # s('#subjectsInput').set_value(Subjects.physics).press_enter()
 
-    def autocomplete(selector: str, from_: str):
-        s(selector).type(from_)
-        ss('.subjects-auto-complete__option').element_by(have.exact_text(from_)).click()
-    '''
-    def autocomplete(selector: str, from_: str, to: str = None):
-        s(selector).type(from_)
-        ss('.subjects-auto-complete__option').element_by(have.exact_text(from_)).click()
-    OR:
-        ss('.subjects-auto-complete__option').element_by(have.exact_text(
-            to if to else from_)).click()
-        
-    autocomplete('#subjectsInput', from_='Eng', to=Subjects.english)   
-    '''
-
-    autocomplete('#subjectsInput', from_=Subjects.maths)
-    autocomplete('#subjectsInput', from_=Subjects.english)
-    autocomplete('#subjectsInput', from_=Subjects.physics)
-
+    subjects = TagsInput()
+    subjects.element = browser.element('#subjectInput')
+    subjects.add('Ma', autocomplete='Maths')
+    subjects.add('English')
+    subjects.add('Physics')
 
     # Select hobbies - checkbox
     s('#hobbiesWrapper').s('label[for=hobbies-checkbox-2]').click()
     s('#hobbiesWrapper').s('label[for=hobbies-checkbox-1]').click()
-
 
     # Upload a file
     s('#uploadPicture').send_keys(resource('picture.png'))
@@ -102,16 +94,8 @@ def test_submit_automation_practice_form():
 
     # Filling the address
     s('#currentAddress').type(f'{Student.address}')
-
-    def select_dropdown(selector: str, /, *, option: str):
-        # все, что до / нужно использовать только позиционный аргумент (т.е. нельзя использовать selector=...)
-        # * обязывает написать при вызове функции option=... (ключ=значение)
-        # между / и * можно использовать два варианта выше
-        s(selector).click()
-        ss('[id^=react-select][id*=option]').element_by(have.exact_text(option)).click()
-
-    select_dropdown('#state', option=Student.state)
-    select_dropdown('#city', option=Student.city)
+    select.dropdown('#state', option=Student.state)
+    select.dropdown('#city', option=Student.city)
 
     # Sending the form
     s('#submit').perform(command.js.click)
