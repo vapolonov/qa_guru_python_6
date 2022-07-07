@@ -9,3 +9,5 @@ def browser_management():
     browser.config.timeout = 3
     browser.config.window_width = 1920
     browser.config.window_height = 1920
+    yield
+    browser.close()
