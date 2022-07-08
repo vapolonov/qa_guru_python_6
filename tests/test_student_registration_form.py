@@ -1,8 +1,11 @@
 
 from selene import have, by, command
 from selene.support.shared import browser
-from selene.support.shared.jquery_style import s
+from selene.support.shared.jquery_style import s, ss
 
+from qa_guru_6.controls import set_hobbies
+from qa_guru_6.controls.dropdown import Dropdown
+from qa_guru_6.controls.tags_input import TagsInput
 from qa_guru_6.utils import resource, arrange_student_registration_form_opened
 
 
@@ -10,6 +13,12 @@ class Subjects:
     maths = 'Maths'
     english = 'English'
     physics = 'Physics'
+
+
+class Hobbies:
+    sports = 'Sports'
+    reading = 'Reading'
+    music = 'Music'
 
 
 def test_submit_automation_practice_form():
@@ -23,7 +32,9 @@ def test_submit_automation_practice_form():
     s('#firstName').type('Vasiliy')
     s('#lastName').type('Apolonov')
     s('#userEmail').type('test@mail.com')
-    s('#userNumber').type('9101112233')
+
+    mobile_number = s('#userNumber')
+    mobile_number.type('9101112233')
 
     # Select Gender (radio-button)
     gender_group = s('#genterWrapper')
@@ -41,26 +52,26 @@ def test_submit_automation_practice_form():
     browser.element('#dateOfBirthInput').with_(set_value_by_js=True).set_value('09 Sep 1974')
     '''
 
-    # Select Subjects
-    s('#subjectsInput').set_value(Subjects.maths).press_enter()
-    s('#subjectsInput').set_value(Subjects.english).press_enter()
-    s('#subjectsInput').set_value(Subjects.physics).press_enter()
+    # Set Subjects
+    subject = TagsInput(s('#subjectsInput'))
+    subject.add(Subjects.maths)
+    subject.autocomplete(from_='Eng', to_=Subjects.english)
+    subject.add_or_auto('Phys')
 
-    # Select hobbies - checkbox
-    sports_hobby = s('#hobbiesWrapper').s('label[for=hobbies-checkbox-1]')
-    sports_hobby.click()
-    music_hobby = s('#hobbiesWrapper').s('label[for=hobbies-checkbox-3]')
-    music_hobby.click()
+    # Set hobbies - checkbox
+    set_hobbies.set_hobby(Hobbies.sports)
+    set_hobbies.set_hobby(Hobbies.music)
 
     # Load a file
-    browser.element('#uploadPicture').send_keys(resource('picture.png'))
+    s('#uploadPicture').send_keys(resource('picture.png'))
 
     # Filling the address
     s('#currentAddress').type('Russia, Nizhny Novgorod')
-    s('#state').perform(command.js.scroll_into_view).click()
-    s(by.text('Uttar Pradesh')).click()
-    s('#city').click()
-    s(by.text('Lucknow')).click()
+
+    set_state = Dropdown(s('#stateCity-wrapper'))
+    set_state.select(state='Uttar Pradesh')
+    set_city = Dropdown(s('#stateCity-wrapper'))
+    set_city.autocomplete(city='Lucknow')
 
     # Sending the form
     '''
