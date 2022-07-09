@@ -15,40 +15,26 @@ def test_submit_automation_practice_form():
     s('.main-header').should(have.exact_text('Practice Form'))
 
     # Filling the form
-    StudentRegistrationForm().set_first_name(data.Student.name).set_last_name(data.Student.surname)
-
-    StudentRegistrationForm().set_email(data.Student.email)
-    StudentRegistrationForm().set_mobile(data.Student.mobile_number)
-
-    # Select Gender
-    StudentRegistrationForm().set_gender(data.Gender.male)
-
-    # Select Date of Birth
-    StudentRegistrationForm().set_birth_date(data.Student.year,
-                                             data.Student.month,
-                                             data.Student.day)
-
-    # Select Subjects
     (
         StudentRegistrationForm()
+        .set_first_name(data.Student.name)
+        .set_last_name(data.Student.surname)
+        .set_email(data.Student.email)
+        .set_mobile(data.Student.mobile_number)
+        .set_gender(data.Gender.male)
+        .set_birth_date(data.Student.year,
+                        data.Student.month,
+                        data.Student.day)
         .select_subjects(data.Subjects.maths)
         .select_subjects(data.Subjects.english)
         .select_subjects(data.Subjects.physics)
+        .select_hobbies(data.Hobbies.reading)
+        .select_hobbies(data.Hobbies.sports)
+        .upload(data.Student.avatar)
+        .set_address(data.Student.address)
+        .set_state_city(data.Student.state, data.Student.city)
     )
 
-    # Select hobbies - checkbox
-    StudentRegistrationForm().select_hobbies(data.Hobbies.reading).select_hobbies(data.Hobbies.sports)
-
-    # Upload a file
-    StudentRegistrationForm().upload(data.Student.avatar)
-
-    # Filling the address
-    StudentRegistrationForm().set_address(data.Student.address)
-
-    # Set state and city
-    StudentRegistrationForm().set_state_city(data.Student.state, data.Student.city)
-
-    # Sending the form
     StudentRegistrationForm().submit()
 
     # Assert
