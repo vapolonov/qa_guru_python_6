@@ -22,25 +22,3 @@ class TagsInput:
         ss(
             '.subjects-auto-complete__option'
         ).element_by(have.text(autocomplete or from_)).click()
-
-
-'''
-# element = ...
-
-... - пустота, отличается от None
-... - означает, что сейчас пустота, но скоро там будет какое то значение
-
-    def autocomplete(selector: str, from_: str, to: str = None):
-        s(selector).type(from_)
-        ss('.subjects-auto-complete__option').element_by(have.exact_text(from_)).click()
-    OR:
-        ss('.subjects-auto-complete__option').element_by(have.exact_text(
-            to if to else from_)).click()
-
-    autocomplete('#subjectsInput', from_='Eng', to=Subjects.english)   
-
-
-    # все, что до / нужно использовать только позиционный аргумент (т.е. нельзя использовать selector=...)
-    # * обязывает написать при вызове функции option=... (ключ=значение)
-    # между / и * можно использовать два варианта выше
-'''

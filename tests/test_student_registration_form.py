@@ -1,7 +1,7 @@
 
-from selene import have, by, command
+from selene import have, command
 from selene.support.shared import browser
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 
 from qa_guru_6.controls import set_hobbies
 from qa_guru_6.controls.datepicker import Datepicker
@@ -63,19 +63,12 @@ def test_submit_automation_practice_form():
                                     month=Student.month_of_birth,
                                     day=Student.day_of_birth)
 
-    '''
-    browser.execute_script('document.querySelector("#dateOfBirthInput").value = "27 Jun 2022";')
-    browser.element('#dateOfBirthInput').perform(command.js.set_value('09 Sep 1974')).press_enter()
-    browser.element('#dateOfBirthInput').with_(set_value_by_js=True).set_value('09 Sep 1974')
-    '''
-
     # Set Subjects
     subject = TagsInput(s('#subjectsInput'))
     subject.add(Subjects.maths)
     # subject.add(Subjects.maths).add(Subjects.english).add(Subjects.physics)
     subject.autocomplete(from_='Eng', to_=Subjects.english)
     subject.add_or_auto('Phys')
-
 
     # Set hobbies - checkbox
     set_hobbies.set_hobby(Hobbies.sports)
@@ -105,41 +98,3 @@ def test_submit_automation_practice_form():
     results.cell(8, 1).should(have.text('picture.png'))
     results.cell(9, 1).should(have.text(Student.address))
     results.cell(10, 1).should(have.text(f'{Student.state} {Student.city}'))
-
-
-    # s('.table-responsive').should(have.text(f'{Student.first_name} {Student.last_name}'))
-    # s('.table-responsive').should(have.text(Student.email))
-    # s('.table-responsive').should(have.text(Student.gender))
-    # s('.table-responsive').should(have.text(Student.mobile))
-    # s('.table-responsive').should(have.text(Student.date_of_birth))
-    # s('.table-responsive').should(have.text(f'{Subjects.maths}, {Subjects.english}, {Subjects.physics}'))
-    # s('.table-responsive').should(have.text(f'{Hobbies.sports}, {Hobbies.music}'))
-    # s('.table-responsive').should(have.text('picture.png'))
-    # s('.table-responsive').should(have.text(Student.address))
-    # s('.table-responsive').should(have.text(f'{Student.state} {Student.city}'))
-
-    '''
-    OR
-    s('.table').ss('tr').should(have.texts('Values',
-                                           'Vasiliy Apolonov',
-                                           'test@mail.com',
-                                           'Male',
-                                           '9101112233',
-                                           '09 September,1974',
-                                           'Maths, English, Physics',
-                                           'Reading, Sports',
-                                           'example.txt',
-                                           'Russia, Nizhny Novgorod',
-                                           'Uttar Pradesh Lucknow'))
-    '''
-    #
-    # browser.all('table tr')[5].all('td')[1].should(have.exact_text('09 September,1974'))
-    #
-    # def cells_of_row(index, should_have_texts: list[str]):
-    #     browser.element('.modal-dialog').all('table tr')[index].all('td').should(have.exact_texts(*should_have_texts))
-    #
-    # cells_of_row(index=5, should_have_texts=[
-    #     'Date of Birth', '09 September,1974'
-    # ])
-    #
-    # cells_of_row(index=6, should_have_texts=['Subjects', 'Maths, English, Physics'])
