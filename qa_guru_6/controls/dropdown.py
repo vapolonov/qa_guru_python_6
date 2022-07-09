@@ -4,14 +4,14 @@ from selene.support.shared.jquery_style import s
 
 
 class Dropdown:
-    def __init__(self, element: Element):
-        self.element = element
+    def __init__(self, state: Element, city: Element):
+        self.state = state
+        self.city = city
 
-    def select(self, state: str):
-        self.element.perform(command.js.scroll_into_view)
-        s('#state').click()
-        s(by.text(state)).click()
+    def select(self, state_data: str):
+        self.state.perform(command.js.scroll_into_view).click()
+        s(by.text(state_data)).click()
 
-    def autocomplete(self, city: str):
-        self.element.s('#react-select-4-input').type(city).press_tab()
+    def autocomplete(self, city_data: str):
+        self.city.s('#react-select-4-input').type(city_data).press_tab()
 

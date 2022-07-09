@@ -11,6 +11,7 @@ class TagsInput:
 
     def add(self, option: str):
         self.element.set_value(option).press_enter()
+        return self
 
     def autocomplete(self, /, *, from_: str, to_: str = None):
         self.element.type(from_)
