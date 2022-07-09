@@ -1,4 +1,3 @@
-
 from selene import have
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
@@ -66,4 +65,3 @@ def test_submit_automation_practice_form():
     results.cell(8, 1).should(have.text(data.Student.avatar))
     results.cell(9, 1).should(have.text(data.Student.address))
     results.cell(10, 1).should(have.text(f'{data.Student.state} {data.Student.city}'))
-
