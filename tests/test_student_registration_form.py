@@ -16,7 +16,7 @@ def test_submit_automation_practice_form():
 
     # Filling the form
     (
-        StudentRegistrationForm
+        StudentRegistrationForm()
         .set_first_name(Student.name)
         .set_last_name(Student.surname)
         .set_email(Student.email)
@@ -40,19 +40,18 @@ def test_submit_automation_practice_form():
     # Assert data
     results = AssertTable(s('.table'))
     (
-        results.check_data(Student.name, 1, 1)
-        .check_data(Student.surname, 1, 1)
-        .check_data(Student.email, 2, 1)
-        .check_data(Gender.male, 3, 1)
-        .check_data(Student.mobile_number, 4, 1)
-        .check_data(Student.date_of_birth, 5, 1)
-        .check_data(Subjects.maths, 6, 1)
-        .check_data(Subjects.english, 6, 1)
-        . check_data(Subjects.physics, 6, 1)
-        .check_data(Hobbies.reading, 7, 1)
-        .check_data(Hobbies.sports, 7, 1)
-        .check_data(Student.avatar, 8, 1)
-        .check_data(Student.address, 9, 1)
-        .check_data(Student.state, 10, 1)
-        .check_data(Student.city, 10, 1)
+        results.check_data(1, 1, Student.name,
+                           Student.surname)
+        .check_data(2, 1, Student.email)
+        .check_data(3, 1, Gender.male)
+        .check_data(4, 1, Student.mobile_number)
+        .check_data(5, 1, Student.date_of_birth)
+        .check_data(6, 1, Subjects.maths,
+                    Subjects.english,
+                    Subjects.physics)
+        .check_data(7, 1, Hobbies.reading,
+                    Hobbies.sports)
+        .check_data(8, 1, Student.avatar)
+        .check_data(9, 1, Student.address)
+        .check_data(10, 1, Student.state, Student.city)
     )
