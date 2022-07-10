@@ -16,7 +16,7 @@ def test_submit_automation_practice_form():
 
     # Filling the form
     (
-        StudentRegistrationForm()
+        StudentRegistrationForm
         .set_first_name(Student.name)
         .set_last_name(Student.surname)
         .set_email(Student.email)
@@ -25,18 +25,19 @@ def test_submit_automation_practice_form():
         .set_birth_date(Student.year,
                         Student.month,
                         Student.day)
-        .select_subjects(Subjects.maths)
-        .select_subjects(Subjects.english)
-        .select_subjects(Subjects.physics)
-        .select_hobbies(Hobbies.reading)
-        .select_hobbies(Hobbies.sports)
+        .select_subjects(Subjects.maths,
+                         Subjects.english,
+                         Subjects.physics)
+        .select_hobbies(Hobbies.reading,
+                        Hobbies.sports)
         .upload(Student.avatar)
         .set_address(Student.address)
         .set_state_city(Student.state, Student.city)
     )
 
-    # Assert data
     StudentRegistrationForm().submit()
+
+    # Assert data
     results = AssertTable(s('.table'))
     (
         results.check_data(Student.name, 1, 1)
@@ -47,7 +48,7 @@ def test_submit_automation_practice_form():
         .check_data(Student.date_of_birth, 5, 1)
         .check_data(Subjects.maths, 6, 1)
         .check_data(Subjects.english, 6, 1)
-        .check_data(Subjects.physics, 6, 1)
+        . check_data(Subjects.physics, 6, 1)
         .check_data(Hobbies.reading, 7, 1)
         .check_data(Hobbies.sports, 7, 1)
         .check_data(Student.avatar, 8, 1)

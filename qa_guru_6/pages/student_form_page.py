@@ -34,12 +34,14 @@ class StudentRegistrationForm:
         s(f'.react-datepicker__day--0{day}').click()
         return self
 
-    def select_subjects(self, value):
-        s('#subjectsInput').set_value(value).press_enter()
+    def select_subjects(self, *values):
+        for value in values:
+            s('#subjectsInput').set_value(value).press_enter()
         return self
 
-    def select_hobbies(self, value):
-        s('#hobbiesWrapper').all('.custom-checkbox').element_by(have.exact_text(value)).click()
+    def select_hobbies(self, *values):
+        for value in values:
+            s('#hobbiesWrapper').all('.custom-checkbox').element_by(have.exact_text(value)).click()
         return self
 
     def upload(self, file: str):

@@ -6,7 +6,7 @@ class AssertTable:
     def __init__(self, element: Element):
         self.element = element
 
-    def check_data(self, value, row_index: int, column_index: int):
+    def check_data(self, value: str, row_index: int, column_index: int):
         self.element.all('tr')[row_index].all('td')[column_index].should(have.text(value))
         return self
 
