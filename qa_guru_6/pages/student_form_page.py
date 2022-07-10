@@ -59,4 +59,3 @@ class StudentRegistrationForm:
 
     def submit(self):
         s('#submit').perform(command.js.click)
-        return self

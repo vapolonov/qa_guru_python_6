@@ -2,8 +2,8 @@ from selene import have
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 
-from qa_guru_6.data import data
-from qa_guru_6.pages.assert_page import Table
+from qa_guru_6.data.data import Student, Subjects, Hobbies, Gender
+from qa_guru_6.pages.assert_page import AssertTable
 from qa_guru_6.pages.student_form_page import StudentRegistrationForm
 from qa_guru_6.utils import arrange_student_registration_form_opened
 
@@ -17,37 +17,41 @@ def test_submit_automation_practice_form():
     # Filling the form
     (
         StudentRegistrationForm()
-        .set_first_name(data.Student.name)
-        .set_last_name(data.Student.surname)
-        .set_email(data.Student.email)
-        .set_mobile(data.Student.mobile_number)
-        .set_gender(data.Gender.male)
-        .set_birth_date(data.Student.year,
-                        data.Student.month,
-                        data.Student.day)
-        .select_subjects(data.Subjects.maths)
-        .select_subjects(data.Subjects.english)
-        .select_subjects(data.Subjects.physics)
-        .select_hobbies(data.Hobbies.reading)
-        .select_hobbies(data.Hobbies.sports)
-        .upload(data.Student.avatar)
-        .set_address(data.Student.address)
-        .set_state_city(data.Student.state, data.Student.city)
+        .set_first_name(Student.name)
+        .set_last_name(Student.surname)
+        .set_email(Student.email)
+        .set_mobile(Student.mobile_number)
+        .set_gender(Gender.male)
+        .set_birth_date(Student.year,
+                        Student.month,
+                        Student.day)
+        .select_subjects(Subjects.maths)
+        .select_subjects(Subjects.english)
+        .select_subjects(Subjects.physics)
+        .select_hobbies(Hobbies.reading)
+        .select_hobbies(Hobbies.sports)
+        .upload(Student.avatar)
+        .set_address(Student.address)
+        .set_state_city(Student.state, Student.city)
     )
 
+    # Assert data
     StudentRegistrationForm().submit()
-
-    # Assert
-    results = Table(s('.modal-content .table'))
-    results.cell(1, 1).should(have.text(f'{data.Student.name} {data.Student.surname}'))
-    results.cell(2, 1).should(have.text(data.Student.email))
-    results.cell(3, 1).should(have.text(data.Gender.male))
-    results.cell(4, 1).should(have.text(data.Student.mobile_number))
-    results.cell(5, 1).should(have.text(data.Student.date_of_birth))
-    results.cell(6, 1).should(have.text(f'{data.Subjects.maths}, '
-                                        f'{data.Subjects.english}, '
-                                        f'{data.Subjects.physics}'))
-    results.cell(7, 1).should(have.text(f'{data.Hobbies.reading}, {data.Hobbies.sports}'))
-    results.cell(8, 1).should(have.text(data.Student.avatar))
-    results.cell(9, 1).should(have.text(data.Student.address))
-    results.cell(10, 1).should(have.text(f'{data.Student.state} {data.Student.city}'))
+    results = AssertTable(s('.table'))
+    (
+        results.check_data(Student.name, 1, 1)
+        .check_data(Student.surname, 1, 1)
+        .check_data(Student.email, 2, 1)
+        .check_data(Gender.male, 3, 1)
+        .check_data(Student.mobile_number, 4, 1)
+        .check_data(Student.date_of_birth, 5, 1)
+        .check_data(Subjects.maths, 6, 1)
+        .check_data(Subjects.english, 6, 1)
+        .check_data(Subjects.physics, 6, 1)
+        .check_data(Hobbies.reading, 7, 1)
+        .check_data(Hobbies.sports, 7, 1)
+        .check_data(Student.avatar, 8, 1)
+        .check_data(Student.address, 9, 1)
+        .check_data(Student.state, 10, 1)
+        .check_data(Student.city, 10, 1)
+    )
