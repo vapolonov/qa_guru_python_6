@@ -40,8 +40,9 @@ def test_submit_automation_practice_form():
     # Assert data
     results = AssertTable(s('.table'))
     (
-        results.check_data(1, 1, Student.name,
-                           Student.surname)
+        results
+        .check_data(1, 1, Student.name,
+                    Student.surname)
         .check_data(2, 1, Student.email)
         .check_data(3, 1, Gender.male)
         .check_data(4, 1, Student.mobile_number)
