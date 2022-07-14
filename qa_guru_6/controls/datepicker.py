@@ -21,8 +21,7 @@ class Datepicker:
         self.element.click()
         browser.execute_script(
             '''
-                document.querySelector("#dateOfBirthInput")
-                .value = ''
+                document.querySelector("#dateOfBirthInput").value = ''
             ''')
         self.element.set_value(option).click()
 
