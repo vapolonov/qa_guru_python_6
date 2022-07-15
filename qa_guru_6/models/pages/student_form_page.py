@@ -1,6 +1,6 @@
 from selene import have, by
 from selene.core import command
-from selene.support.shared.jquery_style import s, ss
+from selene.support.shared.jquery_style import s
 
 from qa_guru_6.utils import resource
 

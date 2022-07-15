@@ -3,20 +3,18 @@ from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 
 from qa_guru_6.data.data import Student, Subjects, Hobbies, Gender
-from qa_guru_6.pages.assert_page import AssertTable
-from qa_guru_6.pages.student_form_page import StudentRegistrationForm
-from qa_guru_6.utils import arrange_student_registration_form_opened
+from qa_guru_6.models import app
 
 
 def test_submit_automation_practice_form():
-    arrange_student_registration_form_opened()
+    app.arrange_student_registration_form_opened()
 
     browser.should(have.title('ToolsQA'))
     s('.main-header').should(have.exact_text('Practice Form'))
 
     # Filling the form
     (
-        StudentRegistrationForm()
+        app.form
         .set_first_name(Student.name)
         .set_last_name(Student.surname)
         .set_email(Student.email)
@@ -35,12 +33,11 @@ def test_submit_automation_practice_form():
         .set_state_city(Student.state, Student.city)
     )
 
-    StudentRegistrationForm().submit()
+    app.form.submit()
 
     # Assert data
-    results = AssertTable(s('.table'))
     (
-        results
+        app.results
         .check_data(1, 1, Student.name,
                     Student.surname)
         .check_data(2, 1, Student.email)
@@ -56,3 +53,8 @@ def test_submit_automation_practice_form():
         .check_data(9, 1, Student.address)
         .check_data(10, 1, Student.state, Student.city)
     )
+
+'''
+    results.should_have_row_with_exact_text(Student.name, Student.surname)
+    results.table.cells_of_row(1).should(have.exact_texts(Student.name, Student.surname)
+'''

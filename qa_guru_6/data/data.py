@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 class Student:
     name = 'Vasily'
     surname = 'Apolonov'
@@ -29,3 +32,17 @@ class Hobbies:
     sports = 'Sports'
     reading = 'Reading'
     music = 'Music'
+
+
+'''
+OR:
+class Hobbies:
+    def __init__(self, *hobbies):
+        self.sports = 'Sports'
+        self.reading = 'Reading'
+        self.music = 'Music'
+
+@dataclass
+class Hobbies:
+    values = list[str]
+'''
