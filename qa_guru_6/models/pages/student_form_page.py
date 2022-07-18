@@ -26,6 +26,19 @@ class StudentRegistrationForm:
     def set_gender(self, value):
         s('#genterWrapper').all('.custom-radio').element_by(have.exact_text(value)).click()
         return self
+    '''
+    OR:
+    def set_gender(self, value):
+        gender = ''
+        if value == 'Male':
+            gender = '[for=gender-radio-1]'
+        elif value == 'Female':
+            gender = '[for=gender-radio-2]'
+        elif value == 'Other':
+            gender = '[for=gender-radio-2]'
+        browser.element(gender).click()
+        return self
+    '''
 
     def set_birth_date(self, year: str, month: int, day: 'str'):
         s('#dateOfBirthInput').click()
