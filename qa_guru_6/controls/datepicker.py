@@ -1,6 +1,8 @@
 from selene.core.entity import Element
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
+import platform
+from selenium.webdriver import Keys
 
 
 class Datepicker:
@@ -24,4 +26,14 @@ class Datepicker:
                 document.querySelector("#dateOfBirthInput").value = ''
             ''')
         self.element.set_value(option).click()
+
+    def set_by_type(birthdate: dict):
+        if platform.system() == 'Windows':
+            browser.element('#dateOfBirthInput').send_keys(Keys.CONTROL, 'a').type(
+                f'{birthdate["day"]} {birthdate["month"]} {birthdate["year"]}'
+            ).press_enter()
+        else:
+            browser.element('#dateOfBirthInput').send_keys(Keys.COMMAND, 'a').type(
+                f'{birthdate["day"]} {birthdate["month"]} {birthdate["year"]}'
+            ).press_enter()
 
