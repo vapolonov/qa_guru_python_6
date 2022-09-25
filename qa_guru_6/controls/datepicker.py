@@ -27,7 +27,8 @@ class Datepicker:
             ''')
         self.element.set_value(option).click()
 
-    def set_by_type(birthdate: dict):
+    # for different operating systems
+    def set_by_type(self, birthdate: dict):
         if platform.system() == 'Windows':
             browser.element('#dateOfBirthInput').send_keys(Keys.CONTROL, 'a').type(
                 f'{birthdate["day"]} {birthdate["month"]} {birthdate["year"]}'
